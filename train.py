@@ -1,17 +1,30 @@
 from __future__ import print_function
+import os
 import keras
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Dense,Dropout,Activation,Flatten,BatchNormalization
 from keras.layers import Conv2D,MaxPooling2D
-import os
 
 num_classes = 5
 img_rows,img_cols = 48,48
 batch_size = 32
 
-train_data_dir = '/Users/durgeshthakur/Deep Learning Stuff/Emotion Classification/fer2013/train'
-validation_data_dir = '/Users/durgeshthakur/Deep Learning Stuff/Emotion Classification/fer2013/validation'
+base_dir = os.path.dirname(os.path.abspath(__file__))
+dataset_root = os.environ.get("FER2013_DIR", "/Users/sedefkoc/Documents/imageProject")
+train_data_dir = os.path.join(dataset_root, "train")
+validation_data_dir = os.path.join(dataset_root, "validation")
+
+if not os.path.isdir(train_data_dir):
+    raise FileNotFoundError(
+        "Training data not found. Set FER2013_DIR or place data under "
+        f"{train_data_dir}"
+    )
+if not os.path.isdir(validation_data_dir):
+    raise FileNotFoundError(
+        "Validation data not found. Set FER2013_DIR or place data under "
+        f"{validation_data_dir}"
+    )
 
 train_datagen = ImageDataGenerator(
 					rescale=1./255,
@@ -149,9 +162,6 @@ history=model.fit_generator(
                 callbacks=callbacks,
                 validation_data=validation_generator,
                 validation_steps=nb_validation_samples//batch_size)
-
-
-
 
 
 

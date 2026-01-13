@@ -1,3 +1,4 @@
+import os
 from keras.models import load_model
 from time import sleep
 from keras.preprocessing.image import img_to_array
@@ -5,8 +6,9 @@ from keras.preprocessing import image
 import cv2
 import numpy as np
 
-face_classifier = cv2.CascadeClassifier(r'D:\Python37\Projects\Facial Expression\emotion_detection-master2\emotion_detection-master\haarcascade_frontalface_default.xml')
-classifier =load_model(r'D:\Python37\Projects\Facial Expression\emotion_detection-master2\emotion_detection-master\Emotion_little_vgg.h5')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+face_classifier = cv2.CascadeClassifier(os.path.join(base_dir, "haarcascade_frontalface_default.xml"))
+classifier = load_model(os.path.join(base_dir, "Emotion_little_vgg.h5"))
 
 class_labels = ['Angry','Happy','Neutral','Sad','Surprise']
 
@@ -65,8 +67,6 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-
-
 
 
 
